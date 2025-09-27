@@ -101,7 +101,6 @@ const MapPage = () => {
           className="bg-black/90 backdrop-blur-sm border-gray-200 hover:bg-black shadow-lg"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Dashboard
         </Button>
       </motion.div>
 
@@ -109,15 +108,15 @@ const MapPage = () => {
       <motion.div
         className="absolute top-4 right-4 z-50"
         initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 0, x: 0 }}
         transition={{ duration: 0.3, delay: 0.1 }}
       >
         <div className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg px-3 py-2 shadow-lg">
           <div className="flex items-center gap-2">
             <div className="bg-gradient-primary p-1 rounded">
-              <Home className="w-4 h-4 text-white" />
+
             </div>
-            <span className="font-bold text-gray-900 text-sm">Swift Care</span>
+            <span className="font-bold text-gray-900 text-sm"></span>
           </div>
         </div>
       </motion.div>
