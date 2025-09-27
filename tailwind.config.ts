@@ -47,6 +47,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Emergency priority colors
+        emergency: {
+          critical: "hsl(var(--emergency-critical))",
+          high: "hsl(var(--emergency-high))",
+          medium: "hsl(var(--emergency-medium))",
+          low: "hsl(var(--emergency-low))",
+          info: "hsl(var(--emergency-info))",
+        },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +67,25 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-emergency': 'var(--gradient-emergency)', 
+        'gradient-success': 'var(--gradient-success)',
+        'gradient-glass': 'var(--gradient-glass)',
+      },
+      boxShadow: {
+        'glow-primary': 'var(--shadow-glow-primary)',
+        'glow-emergency': 'var(--shadow-glow-emergency)',
+        'glass': 'var(--shadow-glass)',
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.5s ease-in-out",
+        "slide-up": "slideUp 0.3s ease-out",
+        "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        "bounce-in": "bounceIn 0.6s ease-out",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,10 +109,24 @@ export default {
             height: "0",
           },
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(40px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 10px hsl(var(--primary) / 0.3)" },
+          "50%": { boxShadow: "0 0 25px hsl(var(--primary) / 0.6)" },
+        },
+        bounceIn: {
+          "0%": { transform: "scale(0.3)", opacity: "0" },
+          "50%": { transform: "scale(1.05)" },
+          "70%": { transform: "scale(0.9)" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
       },
     },
   },

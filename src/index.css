@@ -2,41 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Emergency Response System Design System - High-tech, professional, clean */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors - Dark theme for emergency operations */
+    --background: 220 27% 8%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Cards with glass morphism effect */
+    --card: 220 27% 12%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 27% 12%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
+    /* Primary - Emergency system blue */
+    --primary: 217 91% 60%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Subtle gray for secondary elements */
+    --secondary: 220 27% 18%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 27% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 220 27% 18%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Emergency Priority Colors */
+    --emergency-critical: 0 84% 60%;      /* Red for critical emergencies */
+    --emergency-high: 25 95% 53%;         /* Orange for high priority */
+    --emergency-medium: 45 93% 47%;       /* Yellow for medium priority */
+    --emergency-low: 142 76% 36%;         /* Green for low priority */
+    --emergency-info: 217 91% 60%;        /* Blue for informational */
+
+    /* Status colors */
+    --success: 142 76% 36%;
+    --warning: 45 93% 47%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 27% 18%;
+    --input: 220 27% 18%;
+    --ring: 217 91% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Gradients for emergency system aesthetics */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(229 84% 70%) 100%);
+    --gradient-emergency: linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(25 95% 53%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(158 64% 52%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(220 27% 12% / 0.9) 0%, hsl(220 27% 18% / 0.7) 100%);
+    
+    /* Shadows with glow effects */
+    --shadow-glow-primary: 0 0 20px hsl(217 91% 60% / 0.3);
+    --shadow-glow-emergency: 0 0 20px hsl(0 84% 60% / 0.3);
+    --shadow-glass: 0 8px 32px hsl(220 27% 8% / 0.4);
+    
+    /* Animation timing */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --sidebar-background: 0 0% 98%;
 
