@@ -20,8 +20,8 @@ import {
   EyeOff,
   Settings
 } from 'lucide-react';
-import { Emergency, Hospital as HospitalType } from '@/data/mockData';
-import { findNearestHospitals } from '@/data/mockData';
+import { Emergency, GoogleHospital } from '@/data/mockData';
+import { findNearestHospitals, getDirections, getCurrentLocation } from '@/data/mockData';
 
 // Map styling for dark theme with better readability
 const mapStyles = [
@@ -109,7 +109,7 @@ const MapContainer: React.FC<MapContainerProps> = ({
 }) => {
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
-  const [nearestHospitals, setNearestHospitals] = useState<HospitalType[]>([]);
+  const [nearestHospitals, setNearestHospitals] = useState<GoogleHospital[]>([]);
   const [showTraffic, setShowTraffic] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(true);
   const [isLoadingHospitals, setIsLoadingHospitals] = useState(false);
@@ -164,19 +164,14 @@ const MapContainer: React.FC<MapContainerProps> = ({
   };
 
   const handleNavigate = async (location: { lat: number; lng: number }) => {
-    if (!directionsService.current || !directionsRenderer.current || !mapRef) return;
-
-    // Get user's current location or use a default
-    const userLocation = { lat: 30.3753, lng: 69.3451 }; // Default to Pakistan center
+    if (!directionsRenderer.current || !mapRef) return;
 
     try {
-      const result = await directionsService.current.route({
-        origin: userLocation,
-        destination: location,
-        travelMode: google.maps.TravelMode.DRIVING,
-        avoidHighways: false,
-        avoidTolls: false
-      });
+      // Get user's current location
+      const userLocation = await getCurrentLocation();
+      
+      // Get directions using the new API function
+      const result = await getDirections(userLocation, location);
 
       if (result) {
         setDirections(result);
@@ -204,6 +199,26 @@ const MapContainer: React.FC<MapContainerProps> = ({
     if (directionsRenderer.current) {
       directionsRenderer.current.setMap(null);
       setDirections(null);
+    }
+  };
+
+  const handleNavigateToHospital = async (hospital: GoogleHospital) => {
+    if (!directionsRenderer.current || !mapRef) return;
+
+    try {
+      // Get user's current location
+      const userLocation = await getCurrentLocation();
+      
+      // Get directions to hospital
+      const result = await getDirections(userLocation, hospital.location);
+
+      if (result) {
+        setDirections(result);
+        directionsRenderer.current.setDirections(result);
+        directionsRenderer.current.setMap(mapRef);
+      }
+    } catch (error) {
+      console.error('Directions to hospital failed:', error);
     }
   };
 
@@ -361,7 +376,7 @@ const MapContainer: React.FC<MapContainerProps> = ({
           {/* Hospital Markers */}
           {isGoogleMapsLoaded && nearestHospitals.map((hospital) => (
             <Marker
-              key={hospital.id}
+              key={hospital.place_id}
               position={hospital.location}
               icon={{
                 url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
@@ -624,10 +639,9 @@ const MapContainer: React.FC<MapContainerProps> = ({
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {nearestHospitals.map((hospital) => (
                     <motion.div
-                      key={hospital.id}
-                      className="p-3 rounded-lg bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
+                      key={hospital.place_id}
+                      className="p-3 rounded-lg bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors"
                       whileHover={{ scale: 1.02 }}
-                      onClick={() => handleNavigate(hospital.location)}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -638,16 +652,43 @@ const MapContainer: React.FC<MapContainerProps> = ({
                             {hospital.address}
                           </p>
                           <div className="flex items-center gap-2 text-xs text-gray-500">
-                            <span>{hospital.distance?.toFixed(1)} km</span>
                             {hospital.rating && (
-                              <span>★ {hospital.rating}</span>
+                              <span>★ {hospital.rating} ({hospital.user_ratings_total})</span>
                             )}
-                            {hospital.availableBeds && (
-                              <span>{hospital.availableBeds} beds</span>
+                            {hospital.opening_hours?.open_now !== undefined && (
+                              <span className={hospital.opening_hours.open_now ? 'text-green-600' : 'text-red-600'}>
+                                {hospital.opening_hours.open_now ? 'Open' : 'Closed'}
+                              </span>
                             )}
                           </div>
+                          {hospital.formatted_phone_number && (
+                            <p className="text-xs text-blue-600 mt-1">
+                              📞 {hospital.formatted_phone_number}
+                            </p>
+                          )}
                         </div>
-                        <Navigation className="w-4 h-4 text-blue-600" />
+                        <div className="flex flex-col gap-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-blue-600 hover:text-blue-700 p-1"
+                            onClick={() => handleNavigateToHospital(hospital)}
+                            title="Navigate to hospital"
+                          >
+                            <Navigation className="w-4 h-4" />
+                          </Button>
+                          {hospital.website && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-green-600 hover:text-green-700 p-1"
+                              onClick={() => window.open(hospital.website, '_blank')}
+                              title="Visit website"
+                            >
+                              🌐
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   ))}

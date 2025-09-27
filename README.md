@@ -267,4 +267,84 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
+## 🔧 Backend API Specification
+
+### Overview
+Swift Care requires a backend API for emergency data management. Hospitals are fetched from Google Places API, and routing is handled by Google Directions API.
+
+### Required Backend Endpoints
+
+#### Emergency Management
+- `GET /api/v1/emergencies` - Fetch all emergencies
+- `POST /api/v1/emergencies/:id/acknowledge` - Acknowledge emergency
+
+### Emergency Data Model
+```typescript
+interface Emergency {
+  id: number;
+  title: string;
+  priority: 'Critical' | 'High' | 'Medium' | 'Low';
+  location: {
+    lat: number;
+    lng: number;
+  };
+  address: string;
+  description: string;
+  timestamp: string; // ISO 8601 format
+  type: 'medical' | 'fire' | 'accident' | 'police' | 'other';
+  status: 'active' | 'responding' | 'resolved' | 'cancelled';
+  severity: number; // 1-10 scale
+  estimatedDuration?: string;
+  assignedUnits?: string[];
+  contactInfo?: {
+    phone?: string;
+    email?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  reportedBy: {
+    id: number;
+    name: string;
+    phone?: string;
+  };
+  images?: string[];
+  audio?: string;
+  video?: string;
+}
+```
+
+### API Response Format
+```json
+{
+  "success": true,
+  "data": {
+    "emergencies": Emergency[]
+  }
+}
+```
+
+### Google APIs Integration
+- **Google Places API**: For finding nearest hospitals
+- **Google Directions API**: For routing from device to emergency/hospital
+- **Google Maps JavaScript API**: For map rendering and interactions
+
+### Authentication
+All API endpoints require JWT authentication:
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Error Handling
+```json
+{
+  "success": false,
+  "error": {
+    "code": "EMERGENCY_NOT_FOUND",
+    "message": "Emergency with ID 123 not found"
+  }
+}
+```
+
+---
+
 **Swift Care** - Saving lives through rapid response. 🚑🔥👮‍♂️
