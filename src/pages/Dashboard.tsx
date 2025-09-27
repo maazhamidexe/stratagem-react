@@ -18,6 +18,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import StatsCards from '@/components/StatsCards';
 import AgentTimeline from '@/components/AgentTimeline';
+import EmergencyDashboard from '@/components/EmergencyDashboard';
 import heroImage from '@/assets/hero-emergency-center.jpg';
 import bgImage from '@/assets/bg.png';
 import lastSectionImage from '@/assets/lastsection.png';
@@ -262,123 +263,14 @@ const Dashboard = () => {
           </motion.div>
           
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-            {/* Enhanced Recent Emergencies */}
+            {/* Real Emergency Dashboard */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
               className="space-y-6"
             >
-              <Card className="bg-gradient-glass border-border/30 shadow-glass backdrop-blur-md hover:shadow-glow-primary transition-all duration-500">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-3 text-2xl">
-                    <motion.div
-                      animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    >
-                      <AlertTriangle className="w-7 h-7 text-emergency-high" />
-                    </motion.div>
-                    Active Emergency Feed
-                    <Badge variant="secondary" className="bg-emergency-high/20 text-emergency-high border-emergency-high/30">
-                      LIVE
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {[
-                    { 
-                      type: 'Medical Emergency', 
-                      location: 'Downtown Medical Center', 
-                      priority: 'Critical', 
-                      time: '2 min ago',
-                      id: 'MED-2024-001',
-                      status: 'Dispatched',
-                      responders: 3
-                    },
-                    { 
-                      type: 'Structure Fire', 
-                      location: 'Industrial District Block 5', 
-                      priority: 'High', 
-                      time: '5 min ago',
-                      id: 'FIR-2024-047',
-                      status: 'En Route',
-                      responders: 8
-                    },
-                    { 
-                      type: 'Traffic Incident', 
-                      location: 'Highway 101 Mile Marker 45', 
-                      priority: 'Medium', 
-                      time: '8 min ago',
-                      id: 'TRA-2024-156',
-                      status: 'Responding',
-                      responders: 2
-                    },
-                  ].map((emergency, index) => (
-                    <motion.div
-                      key={index}
-                      className="group relative p-5 rounded-xl bg-card/40 border border-border/20 hover:bg-card/60 hover:border-primary/30 transition-all duration-300 cursor-pointer"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.2 + index * 0.15, duration: 0.6 }}
-                      whileHover={{ x: 5, scale: 1.02 }}
-                    >
-                      {/* Priority indicator */}
-                      <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl ${
-                        emergency.priority === 'Critical' ? 'bg-emergency-critical' :
-                        emergency.priority === 'High' ? 'bg-emergency-high' : 'bg-emergency-medium'
-                      }`} />
-                      
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 pr-4">
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className="font-bold text-foreground text-lg group-hover:text-primary transition-colors">
-                              {emergency.type}
-                            </span>
-                            <Badge 
-                              variant={emergency.priority === 'Critical' ? 'destructive' : 
-                                     emergency.priority === 'High' ? 'default' : 'secondary'}
-                              className="font-semibold"
-                            >
-                              {emergency.priority}
-                            </Badge>
-                          </div>
-                          <p className="text-muted-foreground mb-3 font-medium">{emergency.location}</p>
-                          <div className="flex items-center gap-4 text-sm">
-                            <span className="text-muted-foreground">ID: {emergency.id}</span>
-                            <span className="flex items-center gap-1 text-success">
-                              <Users className="w-3 h-3" />
-                              {emergency.responders} units
-                            </span>
-                            <Badge variant="outline" className="text-xs">
-                              {emergency.status}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                            <Clock className="w-4 h-4" />
-                            {emergency.time}
-                          </div>
-                          <motion.div
-                            className={`w-3 h-3 rounded-full ${
-                              emergency.priority === 'Critical' ? 'bg-emergency-critical' :
-                              emergency.priority === 'High' ? 'bg-emergency-high' : 'bg-emergency-medium'
-                            }`}
-                            animate={{ 
-                              boxShadow: [
-                                "0 0 5px currentColor", 
-                                "0 0 15px currentColor", 
-                                "0 0 5px currentColor"
-                              ]
-                            }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </CardContent>
-              </Card>
+              <EmergencyDashboard />
             </motion.div>
 
             {/* Enhanced Agent Performance Dashboard */}

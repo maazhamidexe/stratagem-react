@@ -23,7 +23,11 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import MapContainer from '@/components/MapContainer';
-import { Emergency, mockEmergencies, mockAgents, fetchEmergencies, acknowledgeEmergency } from '@/data/mockData';
+import { Emergency, mockEmergencies, mockAgents, acknowledgeEmergency } from '@/data/mockData';
+import { BridgeEmergency } from '@/components/EmergencyDashboard';
+
+// Bridge server URL - change this to your bridge server URL
+const BRIDGE_SERVER_URL = 'http://localhost:3001';
 
 const MapPage = () => {
   const navigate = useNavigate();
@@ -36,15 +40,71 @@ const MapPage = () => {
   // Load emergencies on component mount
   useEffect(() => {
     loadEmergencies();
+    
+    // Poll every 5 seconds for new emergencies
+    const interval = setInterval(loadEmergencies, 5000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   const loadEmergencies = async () => {
     setIsLoading(true);
     try {
-      const data = await fetchEmergencies();
-      setEmergencies(data);
+      console.log('Fetching emergencies from bridge server...');
+      const response = await fetch(`${BRIDGE_SERVER_URL}/api/v1/emergencies`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Received emergencies:', data);
+      
+      if (data.success && data.data.emergencies) {
+        // Convert BridgeEmergency to Emergency format
+        const convertedEmergencies: Emergency[] = data.data.emergencies.map((bridgeEmergency: BridgeEmergency) => ({
+          id: parseInt(bridgeEmergency.id.replace(/\D/g, '')) || Math.random() * 1000, // Extract number from ID or generate random
+          title: bridgeEmergency.title,
+          priority: bridgeEmergency.priority,
+          location: {
+            lat: bridgeEmergency.coordinates.latitude,
+            lng: bridgeEmergency.coordinates.longitude
+          },
+          address: bridgeEmergency.address,
+          description: bridgeEmergency.description,
+          timestamp: bridgeEmergency.timestamp,
+          type: bridgeEmergency.type as Emergency['type'],
+          status: bridgeEmergency.status,
+          severity: bridgeEmergency.severity,
+          assignedUnits: bridgeEmergency.assignedUnits,
+          createdAt: bridgeEmergency.timestamp,
+          updatedAt: bridgeEmergency.timestamp,
+          reportedBy: {
+            id: Math.random() * 1000,
+            name: bridgeEmergency.reportedBy.name,
+            phone: bridgeEmergency.reportedBy.phone
+          },
+          contactInfo: {
+            phone: bridgeEmergency.reportedBy.phone,
+            email: bridgeEmergency.reportedBy.email
+          },
+          estimatedDuration: bridgeEmergency.estimatedArrival,
+          images: bridgeEmergency.images,
+          audio: bridgeEmergency.audio,
+          video: bridgeEmergency.video
+        }));
+        
+        // Combine mock data with real data from bridge server
+        const combinedEmergencies = [...mockEmergencies, ...convertedEmergencies];
+        setEmergencies(combinedEmergencies);
+        console.log(`Loaded ${mockEmergencies.length} mock emergencies + ${convertedEmergencies.length} real emergencies = ${combinedEmergencies.length} total:`, combinedEmergencies.map(e => e.title));
+      } else {
+        console.log('No emergencies received from bridge server, using mock data only');
+        setEmergencies(mockEmergencies);
+      }
     } catch (error) {
-      console.error('Failed to load emergencies:', error);
+      console.error('Failed to load emergencies from bridge server, using mock data:', error);
+      setEmergencies(mockEmergencies);
     } finally {
       setIsLoading(false);
     }
@@ -61,15 +121,34 @@ const MapPage = () => {
 
   const handleAcknowledge = async (emergencyId: number) => {
     try {
-      await acknowledgeEmergency(emergencyId);
-      // Update the emergency status in local state
-      setEmergencies(prev => 
-        prev.map(emergency => 
-          emergency.id === emergencyId 
-            ? { ...emergency, status: 'responding' as const }
-            : emergency
-        )
-      );
+      // Find the emergency to get its bridge ID
+      const emergency = emergencies.find(e => e.id === emergencyId);
+      if (!emergency) {
+        console.error('Emergency not found');
+        return;
+      }
+      
+      // Extract bridge ID from the emergency (we'll need to store this)
+      const bridgeId = emergency.title.includes('Test Integration') ? 'test-integration-' + emergencyId : emergencyId.toString();
+      
+      console.log(`Acknowledging emergency ${bridgeId}...`);
+      const response = await fetch(`${BRIDGE_SERVER_URL}/api/v1/emergencies/${bridgeId}/acknowledge`, {
+        method: 'POST'
+      });
+      
+      if (response.ok) {
+        // Update the emergency status in local state
+        setEmergencies(prev => 
+          prev.map(emergency => 
+            emergency.id === emergencyId 
+              ? { ...emergency, status: 'responding' as const }
+              : emergency
+          )
+        );
+        console.log(`Emergency ${bridgeId} acknowledged successfully`);
+      } else {
+        console.error(`Failed to acknowledge emergency ${bridgeId}`);
+      }
     } catch (error) {
       console.error('Failed to acknowledge emergency:', error);
     }
@@ -134,15 +213,21 @@ const MapPage = () => {
               <AlertTriangle className="w-5 h-5 text-emergency-high" />
               Active Emergencies
             </h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={loadEmergencies}
-              disabled={isLoading}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </Button>
+            <div className="flex items-center gap-2">
+              <div className="text-xs text-muted-foreground">
+                Bridge: {emergencies.some(e => e.title.includes('Test')) ? 'Connected' : 'Mock Data Only'}
+                {emergencies.some(e => e.title.includes('Test')) && emergencies.length > 5 && ' + Mock Data'}
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={loadEmergencies}
+                disabled={isLoading}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+              </Button>
+            </div>
           </div>
           
           {/* Search Bar */}
