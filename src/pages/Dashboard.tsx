@@ -19,6 +19,8 @@ import { useNavigate } from 'react-router-dom';
 import StatsCards from '@/components/StatsCards';
 import AgentTimeline from '@/components/AgentTimeline';
 import heroImage from '@/assets/hero-emergency-center.jpg';
+import bgImage from '@/assets/bg.png';
+import lastSectionImage from '@/assets/lastsection.png';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -57,10 +59,10 @@ const Dashboard = () => {
           <img 
             src={heroImage} 
             alt="Emergency Response Center" 
-            className="w-full h-full object-cover opacity-15"
+            className="w-full h-full object-cover opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-background/85" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-background/30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/70 to-background/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-background/20" />
         </div>
         
         <div className="container mx-auto relative z-10">
@@ -135,7 +137,7 @@ const Dashboard = () => {
                     animate={{ translateX: "100%" }}
                     transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                   />
-                  ACCESS LIVE MAP
+                  ACCESS CONSOLE
                   <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
@@ -184,15 +186,35 @@ const Dashboard = () => {
       </section>
 
       {/* Stats Overview */}
-      <section className="px-6 -mt-10">
-        <div className="container mx-auto">
+      <section className="px-6 -mt-10 relative">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={bgImage} 
+            alt="Background" 
+            className="w-full h-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60" />
+        </div>
+        
+        <div className="container mx-auto relative z-10">
           <StatsCards />
         </div>
       </section>
 
       {/* Agent Workflow Timeline */}
-      <section className="py-16 px-6">
-        <div className="container mx-auto">
+      <section className="py-16 px-6 relative">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={bgImage} 
+            alt="Background" 
+            className="w-full h-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/70" />
+        </div>
+        
+        <div className="container mx-auto relative z-10">
           <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -214,8 +236,15 @@ const Dashboard = () => {
 
       {/* Enhanced Real-time Activity Feed */}
       <section className="py-20 px-6 relative">
-        {/* Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background to-background/50" />
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={lastSectionImage} 
+            alt="Background" 
+            className="w-full h-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/80" />
+        </div>
         
         <div className="container mx-auto max-w-7xl relative z-10">
           <motion.div

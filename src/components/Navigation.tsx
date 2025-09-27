@@ -53,7 +53,7 @@ const Navigation = () => {
               className="flex items-center gap-1.5 transition-all duration-300 text-sm px-3 py-1.5"
             >
               <MapPin className="w-4 h-4" />
-              Live Map
+              Console
             </Button>
           </div>
         </div>
