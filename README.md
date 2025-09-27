@@ -1,33 +1,44 @@
-# EmergencyMesh - Intelligent Response System
+# Swift Care
 
-A cutting-edge emergency response system powered by AI agents for intelligent routing, priority assessment, and real-time coordination.
-
-![EmergencyMesh Dashboard](https://lovable.dev/projects/ac66f2c8-efe3-46fe-95e5-be834fbcebda)
+A highly interactive emergency dashboard built with React and Google Maps, featuring rapid emergency response with intelligent priority assessment, real-time resource optimization, and automated coordination protocols.
 
 ## 🚨 System Overview
 
-EmergencyMesh revolutionizes emergency response through intelligent automation:
+Swift Care revolutionizes emergency management through:
 
-- **Input Processing**: Text/voice emergency reports via multiple channels
-- **Routing Agent**: AI determines emergency type (medical, disaster, crime)
-- **Sentiment Agent**: Analyzes urgency and assigns priority levels
-- **Resource Allocator**: Finds nearest hospitals/stations and available resources
-- **Priority Mapping**: Real-time visualization with priority-coded markers
+- **Interactive Google Maps Integration** with custom dark theme styling
+- **Real-time Emergency Visualization** with color-coded priority markers
+- **AI Agent Orchestration** for intelligent routing and resource allocation
+- **Hospital Search & Navigation** using Google Places and Directions APIs
+- **Multi-layer Map Features** including traffic, heatmaps, and drawing tools
+- **Responsive Design** with smooth animations and modern UI
 
 ## 🎯 Features
 
 ### Dashboard Page
-- **Hero Section**: Animated system overview with agent workflow timeline
-- **Live Statistics**: Active emergencies, response teams, coverage areas, response times
-- **Agent Performance**: Real-time status and efficiency metrics
-- **Recent Activity**: Live feed of emergencies and system updates
+- **Clean, minimal, responsive design** with sophisticated animations
+- **Real-time system status** and performance metrics
+- **AI agent workflow visualization** with live activity feeds
+- **Emergency statistics** and response analytics
+- **Interactive navigation** to map view
 
-### Interactive Map Page
-- **Google Maps Integration**: Full-featured mapping with custom markers
-- **Priority Visualization**: Color-coded emergency markers (Red=Critical, Orange=High, Yellow=Medium, Green=Low)
-- **Interactive Info Cards**: Detailed emergency information with action buttons
-- **Agent Workflow Panels**: Real-time agent status and processing updates
-- **Quick Actions**: Navigate, find hospitals, acknowledge emergencies
+### Map View
+- **Full-screen Google Maps integration** with custom dark theme styling
+- **Color-coded emergency markers** with priority levels (Critical, High, Medium, Low)
+- **Interactive info windows** with detailed emergency information
+- **Real-time navigation** with Google Directions API
+- **Nearest hospital search** using Google Places API
+- **Multiple map layers**: Traffic, Heatmap, and Drawing tools
+- **Smooth animations** for marker appearance and transitions
+- **Responsive design** with collapsible side panels
+
+### Advanced Features
+- **Search and filtering** for emergency incidents
+- **Real-time data updates** with API simulation
+- **Emergency acknowledgment** and status tracking
+- **Hospital directory** with distance calculations
+- **AI agent performance monitoring**
+- **System health indicators**
 
 ### Key Components
 - **Responsive Navigation**: Seamless page transitions
@@ -35,47 +46,74 @@ EmergencyMesh revolutionizes emergency response through intelligent automation:
 - **Smooth Animations**: Framer Motion powered interactions
 - **Real-time Updates**: Live data simulation with WebSocket-ready architecture
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS with custom emergency design system
-- **Animations**: Framer Motion for smooth interactions
-- **Maps**: Google Maps API (@react-google-maps/api)
-- **HTTP**: Axios for API communication
-- **UI Components**: Shadcn/UI with custom variants
-- **Icons**: Lucide React
+- **React 18** with TypeScript
+- **Google Maps JavaScript API** via `@react-google-maps/api`
+- **Framer Motion** for animations
+- **Tailwind CSS** for styling
+- **Shadcn/ui** for UI components
+- **React Router** for navigation
+- **TanStack Query** for data fetching
+- **Vite** for build tooling
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ and npm
-- Google Maps API key (for map functionality)
+- Node.js 18+ 
+- npm or yarn
+- Google Maps API key with the following APIs enabled:
+  - Maps JavaScript API
+  - Places API
+  - Directions API
+  - Geocoding API
 
 ### Installation
 
 ```bash
 # Clone the repository
-git clone <YOUR_GIT_URL>
-cd emergency-response-system
+git clone <repository-url>
+cd stratagem-react
 
 # Install dependencies
 npm install
-
-# Start development server
-npm run dev
+# or
+yarn install
 ```
 
 ### Environment Setup
 
-1. **Google Maps API Key**:
-   - Get your API key from [Google Cloud Console](https://console.cloud.google.com/)
-   - Replace `'YOUR_GOOGLE_MAPS_API_KEY'` in `src/pages/MapPage.tsx`
-   - Enable Maps JavaScript API and Places API
+1. **Create Environment File**:
+   ```bash
+   cp .env.example .env
+   ```
 
-2. **Backend Integration**:
-   - Mock data is provided in `src/data/mockData.ts`
-   - Replace mock functions with actual API endpoints
-   - Update axios calls in components as needed
+2. **Get Google Maps API Key**:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the following APIs:
+     - Maps JavaScript API
+     - Places API
+     - Directions API
+     - Geocoding API
+   - Create credentials (API Key)
+   - Restrict the API key to your domain (recommended for production)
+
+3. **Configure Environment Variables**:
+   Edit `.env` and add your Google Maps API key:
+   ```env
+   VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here
+   ```
+
+### Start Development Server
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 🏗️ Architecture
 
@@ -229,4 +267,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**EmergencyMesh** - Saving lives through intelligent automation. 🚑🔥👮‍♂️
+**Swift Care** - Saving lives through rapid response. 🚑🔥👮‍♂️

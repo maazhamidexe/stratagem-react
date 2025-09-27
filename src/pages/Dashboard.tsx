@@ -96,14 +96,14 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              EMERGENCY
+              SWIFT
               <motion.span 
                 className="bg-gradient-primary bg-clip-text text-transparent block"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
               >
-                COMMAND CENTER
+                CARE
               </motion.span>
             </motion.h1>
 
@@ -113,7 +113,7 @@ const Dashboard = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              AI-orchestrated emergency response with intelligent priority assessment, 
+              Rapid emergency response with intelligent priority assessment, 
               real-time resource optimization, and automated coordination protocols.
             </motion.p>
             
