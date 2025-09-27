@@ -63,35 +63,37 @@ const MapPage = () => {
       if (data.success && data.data.emergencies) {
         // Convert BridgeEmergency to Emergency format
         const convertedEmergencies: Emergency[] = data.data.emergencies.map((bridgeEmergency: BridgeEmergency) => ({
-          id: parseInt(bridgeEmergency.id.replace(/\D/g, '')) || Math.random() * 1000, // Extract number from ID or generate random
-          title: bridgeEmergency.title,
-          priority: bridgeEmergency.priority,
+          id: typeof bridgeEmergency.id === 'string' 
+            ? parseInt(bridgeEmergency.id.replace(/\D/g, '')) || Math.random() * 1000
+            : Math.floor(bridgeEmergency.id) || Math.random() * 1000,
+          title: bridgeEmergency.title || 'Unknown Emergency',
+          priority: bridgeEmergency.priority || 'Medium',
           location: {
-            lat: bridgeEmergency.coordinates.latitude,
-            lng: bridgeEmergency.coordinates.longitude
+            lat: bridgeEmergency.coordinates?.latitude || 0.0,
+            lng: bridgeEmergency.coordinates?.longitude || 0.0
           },
-          address: bridgeEmergency.address,
-          description: bridgeEmergency.description,
-          timestamp: bridgeEmergency.timestamp,
-          type: bridgeEmergency.type as Emergency['type'],
-          status: bridgeEmergency.status,
-          severity: bridgeEmergency.severity,
-          assignedUnits: bridgeEmergency.assignedUnits,
-          createdAt: bridgeEmergency.timestamp,
-          updatedAt: bridgeEmergency.timestamp,
+          address: bridgeEmergency.address || 'Unknown address',
+          description: bridgeEmergency.description || 'No description available',
+          timestamp: bridgeEmergency.timestamp || new Date().toISOString(),
+          type: (bridgeEmergency.type as Emergency['type']) || 'other',
+          status: bridgeEmergency.status || 'active',
+          severity: bridgeEmergency.severity || 5,
+          assignedUnits: bridgeEmergency.assignedUnits || [],
+          createdAt: bridgeEmergency.timestamp || new Date().toISOString(),
+          updatedAt: bridgeEmergency.timestamp || new Date().toISOString(),
           reportedBy: {
             id: Math.random() * 1000,
-            name: bridgeEmergency.reportedBy.name,
-            phone: bridgeEmergency.reportedBy.phone
+            name: bridgeEmergency.reportedBy?.name || 'Unknown Reporter',
+            phone: bridgeEmergency.reportedBy?.phone || ''
           },
           contactInfo: {
-            phone: bridgeEmergency.reportedBy.phone,
-            email: bridgeEmergency.reportedBy.email
+            phone: bridgeEmergency.reportedBy?.phone || '',
+            email: bridgeEmergency.reportedBy?.email || ''
           },
-          estimatedDuration: bridgeEmergency.estimatedArrival,
-          images: bridgeEmergency.images,
-          audio: bridgeEmergency.audio,
-          video: bridgeEmergency.video
+          estimatedDuration: bridgeEmergency.estimatedArrival || 'Unknown',
+          images: bridgeEmergency.images || [],
+          audio: bridgeEmergency.audio || null,
+          video: bridgeEmergency.video || null
         }));
         
         // Combine mock data with real data from bridge server
